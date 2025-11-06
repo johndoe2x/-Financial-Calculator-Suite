@@ -554,28 +554,60 @@
                 <div class="card">
                     <h2>📈 Results Summary</h2>
                     
-                    <div class="stats-grid">
-                        <div class="stat-box">
-                            <div class="stat-label">Initial Amount</div>
-                            <div class="stat-value" id="initialValue">₹10,000,000</div>
+                    <button onclick="toggleCorpusMode()" style="width: 100%; margin-bottom: 15px; background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%); font-size: 0.9em;">
+                        🔄 Switch Mode: Future Need Required
+                    </button>
+                    
+                    <div id="corpusLossMode">
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-label">Initial Amount</div>
+                                <div class="stat-value" id="initialValue">₹10,000,000</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Future Value</div>
+                                <div class="stat-value highlight" id="futureValue">₹13,180,795</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Inflation Loss</div>
+                                <div class="stat-value negative" id="inflationLoss">-₹3,180,795</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Loss Percentage</div>
+                                <div class="stat-value negative" id="lossPercentage">-31.8%</div>
+                            </div>
                         </div>
-                        <div class="stat-box">
-                            <div class="stat-label">Future Value</div>
-                            <div class="stat-value highlight" id="futureValue">₹13,180,795</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">Inflation Loss</div>
-                            <div class="stat-value negative" id="inflationLoss">-₹3,180,795</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">Loss Percentage</div>
-                            <div class="stat-value negative" id="lossPercentage">-31.8%</div>
+
+                        <div class="info-box">
+                            <span class="info-icon">💡</span>
+                            The "Future Value" shows what your money will be worth in today's terms after accounting for inflation
                         </div>
                     </div>
 
-                    <div class="info-box">
-                        <span class="info-icon">💡</span>
-                        The "Future Value" shows what your money will be worth in today's terms after accounting for inflation
+                    <div id="corpusNeedMode" style="display: none;">
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-label">Today's Purchasing Power</div>
+                                <div class="stat-value" id="todayPower">₹10,000,000</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">After Inflation Impact</div>
+                                <div class="stat-value warning" id="futureNeed">₹15,230,000</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Additional Corpus Needed</div>
+                                <div class="stat-value positive" id="additionalCorpus">+₹5,230,000</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Increase %</div>
+                                <div class="stat-value positive" id="increasePercent">+52.3%</div>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <span class="info-icon">💡</span>
+                            To maintain the same purchasing power after inflation, you need MORE money in the future!
+                        </div>
                     </div>
                 </div>
             </div>
@@ -596,19 +628,38 @@
 
             <div class="table-container">
                 <h2>📋 Year-by-Year Breakdown</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Year</th>
-                            <th>Nominal Value (₹)</th>
-                            <th>Real Value (₹)</th>
-                            <th>Cumulative Loss (₹)</th>
-                            <th>Loss %</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                    </tbody>
-                </table>
+                
+                <div id="corpusLossTable">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Nominal Value (₹)</th>
+                                <th>Real Value (₹)</th>
+                                <th>Cumulative Loss (₹)</th>
+                                <th>Loss %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="corpusNeedTable" style="display: none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Today's Amount (₹)</th>
+                                <th>Amount Needed (₹)</th>
+                                <th>Additional Required (₹)</th>
+                                <th>Increase %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="needTableBody">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -736,6 +787,32 @@
                 </div>
 
                 <div class="card">
+                    <h2>🎯 Reverse SIP Calculator</h2>
+                    
+                    <div class="input-group">
+                        <label for="targetCorpus">Target Corpus Amount (₹)</label>
+                        <input type="number" id="targetCorpus" value="1000000" placeholder="Enter target amount">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reverseSipReturn">Expected Annual Return (%)</label>
+                        <input type="number" id="reverseSipReturn" value="15" step="0.1" placeholder="Enter expected return rate">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reverseSipYears">Investment Period (Years)</label>
+                        <input type="number" id="reverseSipYears" value="15" placeholder="Enter investment period">
+                    </div>
+
+                    <button onclick="calculateReverseSIP()">Calculate Required SIP</button>
+
+                    <div class="info-box">
+                        <span class="info-icon">ℹ️</span>
+                        Find out how much SIP you need to reach your target corpus
+                    </div>
+                </div>
+
+                <div class="card">
                     <h2>📈 SIP Summary</h2>
                     
                     <div class="sip-stats">
@@ -764,6 +841,55 @@
                     <div class="info-box">
                         <span class="info-icon">💡</span>
                         Power of compound interest: Your investments grow exponentially over time with consistent monthly contributions
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content" style="margin-top: 30px;">
+                <div class="card">
+                    <h2>💰 Reverse SIP Results</h2>
+                    
+                    <div class="sip-stats">
+                        <div class="sip-stat-box">
+                            <div class="sip-stat-label">Target Corpus</div>
+                            <div class="sip-stat-value" id="reverseSipTargetDisplay">₹10,00,000</div>
+                            <div class="sip-stat-subtext">Your goal</div>
+                        </div>
+                        <div class="sip-stat-box">
+                            <div class="sip-stat-label">Required Monthly SIP</div>
+                            <div class="sip-stat-value highlight" id="requiredSipAmount">₹28,404</div>
+                            <div class="sip-stat-subtext">For 15 years</div>
+                        </div>
+                        <div class="sip-stat-box">
+                            <div class="sip-stat-label">Total Investment</div>
+                            <div class="sip-stat-value positive" id="reverseSipTotalInvested">₹51,12,720</div>
+                            <div class="sip-stat-subtext">15 years × monthly</div>
+                        </div>
+                        <div class="sip-stat-box">
+                            <div class="sip-stat-label">Investment Gains</div>
+                            <div class="sip-stat-value positive" id="reverseSipGains">+₹48,87,280</div>
+                            <div class="sip-stat-subtext">Returns earned</div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>
+                        This shows the monthly SIP required to reach your target corpus with the given return rate
+                    </div>
+                </div>
+
+                <div class="card" style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%); border: 2px solid #00ff88;">
+                    <h2 style="color: #00ff88;">⚡ Quick Comparison</h2>
+                    
+                    <div style="background: #0f0f0f; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                        <div style="margin-bottom: 15px;">
+                            <div style="color: #888; font-size: 0.9em; margin-bottom: 5px;">Forward SIP (Given Amount)</div>
+                            <div style="color: #00ff88; font-size: 1.3em; font-weight: bold;" id="forwardSipComparison">₹15,000/month → ₹82,77,405 in 15 years</div>
+                        </div>
+                        <div>
+                            <div style="color: #888; font-size: 0.9em; margin-bottom: 5px;">Reverse SIP (Target Amount)</div>
+                            <div style="color: #ff9800; font-size: 1.3em; font-weight: bold;" id="reverseSipComparison">₹28,404/month → ₹10,00,000 in 15 years</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -895,6 +1021,25 @@
                     </table>
                 </div>
             </div>
+
+            <div class="table-container">
+                <h2>📋 Year-by-Year Corpus Requirement for Instant Retirement</h2>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Monthly Expense (₹)</th>
+                                <th>Annual Expense (₹)</th>
+                                <th>Corpus Needed (25× Rule) (₹)</th>
+                                <th>Can Retire?</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpusProjectionTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -940,6 +1085,19 @@
         }
 
         // ===== CORPUS DEPRECIATION FUNCTIONS =====
+        let corpusMode = 'loss'; // 'loss' or 'need'
+
+        function toggleCorpusMode() {
+            corpusMode = corpusMode === 'loss' ? 'need' : 'loss';
+            document.getElementById('corpusLossMode').style.display = corpusMode === 'loss' ? 'block' : 'none';
+            document.getElementById('corpusNeedMode').style.display = corpusMode === 'need' ? 'block' : 'none';
+            document.getElementById('corpusLossTable').style.display = corpusMode === 'loss' ? 'block' : 'none';
+            document.getElementById('corpusNeedTable').style.display = corpusMode === 'need' ? 'block' : 'none';
+            
+            const btn = event.target;
+            btn.textContent = corpusMode === 'loss' ? '🔄 Switch Mode: Future Need Required' : '🔄 Switch Mode: Loss Calculation';
+        }
+
         function calculateInflation() {
             const corpus = parseFloat(document.getElementById('corpus').value) || 0;
             const inflationRate = parseFloat(document.getElementById('inflation').value) || 0;
@@ -960,6 +1118,16 @@
                 `${formatCurrency(inflationLoss)} ${lossPercentage > 0 ? '❌' : '✅'}`;
             document.getElementById('lossPercentage').textContent = `-${lossPercentage.toFixed(2)}%`;
 
+            // For "Need" mode - calculate how much you need to maintain purchasing power
+            const futureCorpusNeeded = corpus * Math.pow(1 + inflationRate / 100, years);
+            const additionalNeeded = futureCorpusNeeded - corpus;
+            const increasePercent = (additionalNeeded / corpus) * 100;
+
+            document.getElementById('todayPower').textContent = formatCurrency(corpus);
+            document.getElementById('futureNeed').textContent = formatCurrency(futureCorpusNeeded);
+            document.getElementById('additionalCorpus').textContent = `+${formatCurrency(additionalNeeded)}`;
+            document.getElementById('increasePercent').textContent = `+${increasePercent.toFixed(2)}%`;
+
             const yearData = [];
             for (let year = 0; year <= years; year++) {
                 const nominalValue = corpus;
@@ -976,7 +1144,23 @@
                 });
             }
 
+            // Generate year-by-year data for "need" mode
+            const needData = [];
+            for (let year = 0; year <= years; year++) {
+                const neededAmount = corpus * Math.pow(1 + inflationRate / 100, year);
+                const additionalNeeded = neededAmount - corpus;
+                const increasePercent = (additionalNeeded / corpus) * 100;
+
+                needData.push({
+                    year,
+                    neededAmount,
+                    additionalNeeded,
+                    increasePercent
+                });
+            }
+
             updateCorpusTable(yearData);
+            updateCorpusNeedTable(needData, corpus);
             updateCorpusCharts(yearData, corpus);
         }
 
@@ -994,6 +1178,25 @@
                     <td class="highlight">${formatCurrency(row.real)}</td>
                     <td class="${lossClass}">${formatCurrency(row.cumulativeLoss)}</td>
                     <td class="${lossClass}">${row.lossPercent.toFixed(2)}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateCorpusNeedTable(data, corpus) {
+            const tbody = document.getElementById('needTableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                const increaseClass = row.year === 0 ? '' : 'warning';
+                
+                tr.innerHTML = `
+                    <td><strong>${row.year}</strong></td>
+                    <td>${formatCurrency(corpus)}</td>
+                    <td class="highlight">${formatCurrency(row.neededAmount)}</td>
+                    <td class="${increaseClass}">${formatCurrency(row.additionalNeeded)}</td>
+                    <td class="${increaseClass}">${row.increasePercent.toFixed(2)}%</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1507,6 +1710,60 @@
             });
         }
 
+        // ===== REVERSE SIP CALCULATOR =====
+        function calculateReverseSIP() {
+            const targetCorpus = parseFloat(document.getElementById('targetCorpus').value) || 0;
+            const expectedReturn = parseFloat(document.getElementById('reverseSipReturn').value) || 0;
+            const years = parseInt(document.getElementById('reverseSipYears').value) || 0;
+
+            if (targetCorpus <= 0 || expectedReturn < 0 || years <= 0) {
+                alert('Please enter valid positive values');
+                return;
+            }
+
+            // Reverse SIP calculation using the formula:
+            // PV = FV / [((1 + r)^n - 1) / r] / (1 + r)
+            // Where PV = monthly payment, FV = future value (target), r = monthly rate, n = months
+            
+            const monthlyRate = expectedReturn / 100 / 12;
+            const months = years * 12;
+            
+            // Calculate the multiplier factor for FV
+            let multiplier = 0;
+            for (let month = 1; month <= months; month++) {
+                multiplier = (multiplier + 1) * (1 + monthlyRate);
+            }
+            
+            const requiredSIP = targetCorpus / multiplier;
+            const totalInvested = requiredSIP * months;
+            const totalGains = targetCorpus - totalInvested;
+
+            // Update display
+            document.getElementById('reverseSipTargetDisplay').textContent = formatCurrency(targetCorpus);
+            document.getElementById('requiredSipAmount').textContent = formatCurrency(requiredSIP);
+            document.getElementById('reverseSipTotalInvested').textContent = formatCurrency(totalInvested);
+            document.getElementById('reverseSipGains').textContent = `+${formatCurrency(totalGains)}`;
+
+            // Get current forward SIP values for comparison
+            const forwardSipAmount = parseFloat(document.getElementById('sipAmount').value) || 15000;
+            const forwardReturnRate = parseFloat(document.getElementById('expectedReturn').value) || 15;
+            const forwardYears = parseInt(document.getElementById('sipYears').value) || 15;
+            
+            // Calculate forward SIP result for comparison
+            const monthlyRateForward = forwardReturnRate / 100 / 12;
+            const monthsForward = forwardYears * 12;
+            
+            let portfolioValueForward = 0;
+            for (let month = 1; month <= monthsForward; month++) {
+                portfolioValueForward = (portfolioValueForward + forwardSipAmount) * (1 + monthlyRateForward);
+            }
+
+            document.getElementById('forwardSipComparison').textContent = 
+                `₹${forwardSipAmount.toLocaleString('en-IN')}/month → ${formatCurrency(portfolioValueForward)} in ${forwardYears} years`;
+            document.getElementById('reverseSipComparison').textContent = 
+                `${formatCurrency(requiredSIP)}/month → ${formatCurrency(targetCorpus)} in ${years} years`;
+        }
+
         // ===== 4% RULE RETIREMENT CALCULATOR =====
         function calculateRetirementPlan() {
             const monthlyExpense = parseFloat(document.getElementById('retirementMonthlyExpense').value) || 0;
@@ -1526,6 +1783,10 @@
             const requiredCorpus = finalAnnualExpense / 0.04;
             const yearlyWithdrawal = requiredCorpus * 0.04;
 
+            // Simple 25x rule (without inflation): Monthly Expense × 25 × 12
+            const simpleCorpusNeeded = monthlyExpense * 25 * 12;
+            const canRetireNow = simpleCorpusNeeded; // Amount needed to retire TODAY with current expenses
+
             // Update summary
             document.getElementById('retirementTodayMonthly').textContent = formatCurrency(monthlyExpense);
             document.getElementById('retirementFinalMonthly').textContent = formatCurrency(finalMonthlyExpense);
@@ -1534,7 +1795,15 @@
 
             // Update formula breakdown
             const formulaHTML = `
-                <div>Step 1: Calculate final monthly expense at retirement:</div>
+                <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #555;">
+                    <strong style="color: #00ff88;">📊 QUICK CHECK - Can You Retire Now?</strong><br>
+                    <div style="margin: 10px 0; color: #ffb74d; font-size: 0.95em;">
+                        <strong>25× Rule (Simple):</strong> ${formatCurrency(monthlyExpense)} × 25 = <strong style="color: #00ff88;">${formatCurrency(simpleCorpusNeeded)}</strong><br>
+                        <span style="font-size: 0.85em; color: #888;">If you have ${formatCurrency(simpleCorpusNeeded)}, you can retire TODAY with current ${formatCurrency(monthlyExpense)}/month expenses</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px;">Step 1: Calculate final monthly expense at retirement:</div>
                 <div style="margin: 10px 0; color: #ffb74d;">
                     ₹${monthlyExpense.toLocaleString('en-IN')} × (1 + ${inflationRate}%)^${yearsToRetirement} = ${formatCurrency(finalMonthlyExpense)}
                 </div>
@@ -1575,7 +1844,24 @@
                 });
             }
 
+            // Generate year-by-year corpus projection data (25x rule for instant retirement)
+            const corpusProjectionData = [];
+            for (let year = 0; year <= yearsToRetirement; year++) {
+                const monthlyExp = monthlyExpense * Math.pow(1 + inflationRate / 100, year);
+                const annualExp = monthlyExp * 12;
+                const corpusNeeded = monthlyExp * 25 * 12; // 25x multiplier rule without further inflation
+
+                corpusProjectionData.push({
+                    year,
+                    monthly: monthlyExp,
+                    annual: annualExp,
+                    corpusNeeded: corpusNeeded,
+                    corpus: canRetireNow // This is the user's current corpus (same for all years)
+                });
+            }
+
             updateRetirementTable(yearData);
+            updateCorpusProjectionTable(corpusProjectionData);
             updateRetirementCharts(yearData, monthlyExpense, finalMonthlyExpense, requiredCorpus);
         }
 
@@ -1593,6 +1879,26 @@
                     <td class="highlight">${formatCurrency(row.annual)}</td>
                     <td>${formatCurrency(row.cumulative)}</td>
                     <td class="${growthClass}">${row.growth.toFixed(2)}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateCorpusProjectionTable(data) {
+            const tbody = document.getElementById('corpusProjectionTableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                const canRetireClass = row.corpus >= row.corpusNeeded ? 'positive' : 'negative';
+                const canRetireText = row.corpus >= row.corpusNeeded ? '✅ Yes' : '❌ No';
+                
+                tr.innerHTML = `
+                    <td><strong>Year ${row.year}</strong></td>
+                    <td>${formatCurrency(row.monthly)}</td>
+                    <td>${formatCurrency(row.annual)}</td>
+                    <td class="highlight">${formatCurrency(row.corpusNeeded)}</td>
+                    <td class="${canRetireClass}">${canRetireText}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1717,6 +2023,10 @@
         document.getElementById('expectedReturn').addEventListener('change', calculateSIP);
         document.getElementById('sipYears').addEventListener('change', calculateSIP);
 
+        document.getElementById('targetCorpus').addEventListener('change', calculateReverseSIP);
+        document.getElementById('reverseSipReturn').addEventListener('change', calculateReverseSIP);
+        document.getElementById('reverseSipYears').addEventListener('change', calculateReverseSIP);
+
         document.getElementById('retirementMonthlyExpense').addEventListener('change', calculateRetirementPlan);
         document.getElementById('retirementInflation').addEventListener('change', calculateRetirementPlan);
         document.getElementById('yearsToRetirement').addEventListener('change', calculateRetirementPlan);
@@ -1725,6 +2035,7 @@
         calculateInflation();
         calculateExpenseInflation();
         calculateSIP();
+        calculateReverseSIP();
         calculateRetirementPlan();
     </script>
 </body>
